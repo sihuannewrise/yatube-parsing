@@ -1,4 +1,4 @@
-import scrapy
+from scrapy.exceptions import DropItem
 from datetime import datetime
 from sqlalchemy import create_engine, Column, Date, Integer, String, Text
 from sqlalchemy.orm import Session, declarative_base, declared_attr
@@ -41,9 +41,7 @@ class MondayPipeline:
             self.session.commit()
             return item
         else:
-            raise scrapy.exceptions.DropItem(
-                'Этотъ постъ написанъ не въ понедѣльникъ'
-            )
+            raise DropItem('Этотъ постъ написанъ не въ понедѣльникъ')
 
     def close_spider(self, spider):
         self.session.close()
