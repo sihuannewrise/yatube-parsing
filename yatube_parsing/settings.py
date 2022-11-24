@@ -94,7 +94,11 @@ TWISTED_REACTOR = 'twisted.internet.asyncioreactor.AsyncioSelectorReactor'
 FEEDS = {
     'articles.csv': {
         'format': 'csv',
-        'fields': ['author', 'text', 'date'],
+        'fields': ['author', 'text', 'date', ],
         'overwrite': True
     },
+}
+
+ITEM_PIPELINES = {
+    'yatube_parsing.pipelines.MondayPipeline': 300,
 }
