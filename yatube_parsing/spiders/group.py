@@ -9,7 +9,7 @@ class GroupSpider(scrapy.Spider):
     def parse(self, response):
         all_groups = response.css('a.group_link::attr(href)')
         for group_link in all_groups:
-            return response.follow(group_link, callback=self.parse_group)
+            yield response.follow(group_link, callback=self.parse_group)
 
         next_page = response.xpath("//a[contains(., 'Следующая')]/@href").get()
         if next_page is not None:
@@ -18,8 +18,8 @@ class GroupSpider(scrapy.Spider):
     def parse_group(self, response):
         group = response.css('div.card')
         yield {
-            'group_name': group.css('h2::text').strip(),
-            'description': group.css('p.group_descr::text'),
+            'group_name': group.css('h2::text').get(),
+            'description': group.css('p.group_descr::text').get(),
             'posts_count': int(
                 ' '.join(t.strip() for t in group.css(
                     'div.posts_count::text').getall()).split()[1]
